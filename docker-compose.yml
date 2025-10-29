@@ -1,0 +1,28 @@
+version: "3.9"
+services:
+  app:
+    build: ./infra/php
+    depends_on:
+      - db
+    environment:
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_DATABASE: app_db
+      DB_USERNAME: app_user
+      DB_PASSWORD: app_password
+    volumes:
+      - ./src:/data
+
+  db:
+    build: ./infra/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: app_db
+      MYSQL_USER: app_user
+      MYSQL_PASSWORD: app_password
+      TZ: Asia/Tokyo
+    volumes:
+      - db-store:/var/lib/mysql
+
+volumes:
+  db-store:
