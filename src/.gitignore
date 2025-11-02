@@ -1,0 +1,15 @@
+.DS_Store
+.env
+.env.*
+/vendor/
+composer.lock
+*.log
+/tmp/
+.cache/
+**/.env
+**/data/
+**/node_modules/
+**/.docker/
+.vscode/
+.idea/
+Thumbs.db
