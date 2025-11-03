@@ -1,4 +1,4 @@
--- schema.sql
+-- cp_question2_schema.sql
 -- MySQL 8 前提。
 -- 先に CREATE DATABASE / USE は別でやってください。
 -- 例:
@@ -26,13 +26,16 @@ CREATE TABLE member_emails (
   member_id          BIGINT UNSIGNED NOT NULL,
   email              VARCHAR(320) NOT NULL,
   is_primary         TINYINT(1) NOT NULL DEFAULT 0,
+  is_primary_member_id BIGINT UNSIGNED AS (IF(is_primary = 1, member_id, NULL)) STORED,
   is_verified        TINYINT(1) NOT NULL DEFAULT 0,
   verification_token VARCHAR(255) NULL,
   verified_at        DATETIME NULL,
   created_at         DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (id),
   UNIQUE KEY uq_member_emails_email (email),
+  UNIQUE KEY uq_member_emails_primary (is_primary_member_id),
   KEY idx_member_emails_member (member_id),
+  CONSTRAINT chk_member_emails_primary_flag CHECK (is_primary IN (0,1)),
   CONSTRAINT fk_member_emails_member
     FOREIGN KEY (member_id) REFERENCES members(id)
     ON DELETE CASCADE
@@ -129,8 +132,11 @@ CREATE TABLE reactions (
   CONSTRAINT fk_reactions_reply
     FOREIGN KEY (reply_id) REFERENCES replies(id)
     ON DELETE CASCADE,
+  CONSTRAINT chk_reactions_target CHECK (
+    (post_id IS NOT NULL AND reply_id IS NULL)
+    OR (post_id IS NULL AND reply_id IS NOT NULL)
+  ),
   -- 同じ対象に同じスタンプを何度も付けない想定（NULL の扱いは MySQL 仕様に依存）
   UNIQUE KEY uq_react_post (member_id, stamp_type_id, post_id),
   UNIQUE KEY uq_react_reply (member_id, stamp_type_id, reply_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-

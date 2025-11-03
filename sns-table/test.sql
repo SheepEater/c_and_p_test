@@ -1,4 +1,4 @@
-USE cp_problem2;
+USE cp_question2;
 SET NAMES utf8mb4;
 
 -- シード＆確認
@@ -12,7 +12,7 @@ UNION ALL SELECT 1,(SELECT id FROM tags WHERE name='日常')
 UNION ALL SELECT 2,(SELECT id FROM tags WHERE name='日常');
 
 SELECT 'tables' AS what, COUNT(*) AS n FROM information_schema.tables
- WHERE table_schema='cp_problem2'
+ WHERE table_schema='cp_question2'
 UNION ALL SELECT 'posts', COUNT(*) FROM posts
 UNION ALL SELECT 'replies', COUNT(*) FROM replies
 UNION ALL SELECT 'tags', COUNT(*) FROM tags

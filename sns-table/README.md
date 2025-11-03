@@ -10,14 +10,16 @@ SNSの一部機能を想定したテーブル定義です。
 
 1. MySQL 8 を用意する（Dockerでも可）
 2. 空の DB を作る（例：`cp_question2`）
-3. このリポジトリの `schema.sql` を実行する
+3. このリポジトリの `cp_question2_schema.sql` を実行する
 4. このリポジトリの `test.sql` を実行する
 
 ```sql
 -- 例
 CREATE DATABASE cp_question2 CHARACTER SET utf8mb4;
 USE cp_question2;
-SOURCE ./schema.sql;
+SOURCE ./cp_question2_schema.sql;
+SOURCE ./test.sql;
+```
 
 
 ## テーブルの概要

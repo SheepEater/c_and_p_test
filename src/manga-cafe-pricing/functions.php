@@ -86,13 +86,13 @@ function overlapsNightPeriod(DateTimeImmutable $start, DateTimeImmutable $end): 
         return false;
     }
 
-    $currentDay = $start->setTime(0, 0);
+    $currentDay = $start->setTime(0, 0)->modify('-1 day');
     $endDay = $end->setTime(0, 0);
 
     while ($currentDay->getTimestamp() <= $endDay->getTimestamp()) {
         $nightStart = $currentDay->setTime(22, 0);
         // 翌05:00
-        $nightEnd = $nightStart->modify('+7 hours');
+        $nightEnd = $currentDay->modify('+1 day')->setTime(5, 0);
 
         if ($start < $nightEnd && $end > $nightStart) {
             return true;
